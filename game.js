@@ -4,6 +4,9 @@ const overlay = document.querySelector("#gameOverlay");
 const overlayTitle = document.querySelector("#overlayTitle");
 const overlayText = document.querySelector("#overlayText");
 const startButton = document.querySelector("#startButton");
+const helpButton = document.querySelector("#helpButton");
+const helpMarkup = overlayText.innerHTML;
+const helpTitle = overlayTitle.textContent;
 const bestScoreElement = document.querySelector("#bestScore");
 const laneButtons = [...document.querySelectorAll("[data-lane]")];
 const ASSET = "intermediate_tutorial_assets/";
@@ -14,6 +17,9 @@ const lanes = 5;
 let width = 800;
 let height = 600;
 let running = false;
+let hasStarted = false;
+let roundFinished = false;
+let overlayMode = "start";
 let lastTime = 0;
 let spawnClock = 0;
 let spawnDelay = 1.45;
@@ -73,6 +79,7 @@ function resetGame() {
   waveClock = 0;
   knights = [];
   monsters = [];
+  roundFinished = false;
   refreshControls();
 }
 
@@ -81,12 +88,17 @@ function startGame() {
   overlay.classList.remove("is-visible");
   startButton.textContent = "Tekrar oyna";
   running = true;
+  hasStarted = true;
+  overlayMode = "resume";
   lastTime = performance.now();
   requestAnimationFrame(loop);
 }
 
 function finishGame() {
   running = false;
+  hasStarted = false;
+  roundFinished = true;
+  overlayMode = "restart";
   if (score > bestScore) {
     bestScore = score;
     localStorage.setItem("sprite-clash-best", String(bestScore));
@@ -95,6 +107,29 @@ function finishGame() {
   overlayTitle.textContent = `Skor: ${score}`;
   overlayText.textContent = `${wave}. dalgaya ulaştın. Koridorları daha iyi zamanlamak için yeniden deneyebilirsin.`;
   overlay.classList.add("is-visible");
+}
+
+function showHelp() {
+  const canResume = hasStarted && !roundFinished;
+  running = false;
+  overlayMode = canResume ? "resume" : "start";
+  overlayTitle.textContent = helpTitle;
+  overlayText.innerHTML = helpMarkup;
+  startButton.textContent = canResume ? "Oyuna dön" : "Oyuna başla";
+  overlay.classList.add("is-visible");
+  refreshControls();
+}
+
+function handleOverlayAction() {
+  if (overlayMode === "resume") {
+    overlay.classList.remove("is-visible");
+    running = true;
+    lastTime = performance.now();
+    refreshControls();
+    requestAnimationFrame(loop);
+    return;
+  }
+  startGame();
 }
 
 function deploy(lane) {
@@ -283,7 +318,8 @@ window.addEventListener("keydown", (event) => {
   if (lane >= 0 && lane < lanes && !event.repeat) deploy(lane);
 });
 window.addEventListener("resize", resize);
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", handleOverlayAction);
+helpButton.addEventListener("click", showHelp);
 
 resize();
 refreshControls();

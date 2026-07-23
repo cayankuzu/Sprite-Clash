@@ -36,6 +36,12 @@ button { font: inherit; }
   gap: 20px;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
 .eyebrow,
 .header-stat span {
   color: #7f91af;
@@ -63,6 +69,20 @@ h1 {
 }
 
 .header-stat strong { margin-top: 2px; font-size: 1.2rem; }
+
+.help-button {
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid var(--blue);
+  color: var(--ice);
+  background: rgba(111, 168, 255, .1);
+  border-radius: 999px;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
 
 .stage-card {
   position: relative;
@@ -95,6 +115,8 @@ canvas {
 
 .overlay-panel {
   width: min(480px, 100%);
+  max-height: calc(100% - 8px);
+  overflow-y: auto;
   padding: clamp(24px, 6vw, 48px);
   border: 1px solid rgba(184, 211, 255, .18);
   background: rgba(7, 12, 25, .93);
@@ -122,6 +144,18 @@ canvas {
   font-size: .9rem;
   line-height: 1.5;
 }
+
+.overlay-text {
+  margin: 14px auto 22px;
+  color: #9aabc7;
+  font-size: .9rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.overlay-text p { margin: 0 0 12px; }
+.overlay-text ul { margin: 0; padding-left: 20px; }
+.overlay-text li + li { margin-top: 7px; }
 
 #startButton,
 .lane-controls button {
@@ -192,6 +226,7 @@ canvas {
   canvas { height: min(58svh, 540px); min-height: 350px; aspect-ratio: auto; }
   .game-footer { display: none; }
   .lane-controls button { min-height: 54px; border-radius: 13px; }
+  .help-button { min-height: 42px; padding: 0 13px; }
 }
 
 @media (max-width: 390px) {
@@ -200,7 +235,16 @@ canvas {
 
 @media (max-height: 560px) and (orientation: landscape) {
   .game-shell { width: min(100% - 18px, 900px); padding: 6px 0; }
-  .game-header { display: none; }
+  .game-header {
+    position: absolute;
+    z-index: 5;
+    top: 12px;
+    right: 18px;
+    display: flex;
+    padding: 0;
+  }
+  .game-header > div:first-child,
+  .header-stat { display: none; }
   canvas { height: calc(100svh - 68px); min-height: 0; aspect-ratio: auto; }
   .lane-controls { margin-top: 6px; }
   .lane-controls button { min-height: 46px; }

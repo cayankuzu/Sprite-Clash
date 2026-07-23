@@ -19,9 +19,12 @@
           <span class="eyebrow">Pygame Intermediate Lab</span>
           <h1>Sprite Clash</h1>
         </div>
-        <div class="header-stat">
-          <span>En iyi</span>
-          <strong id="bestScore">0</strong>
+        <div class="header-actions">
+          <button class="help-button" id="helpButton" type="button">Yardım</button>
+          <div class="header-stat">
+            <span>En iyi</span>
+            <strong id="bestScore">0</strong>
+          </div>
         </div>
       </header>
 
@@ -33,9 +36,15 @@
           <div class="overlay-panel">
             <span class="overlay-kicker">Koridor savunması</span>
             <h2 id="overlayTitle">Kaleyi savun</h2>
-            <p id="overlayText">
-              Bir koridora dokunarak şövalye gönder. Canavarlar kaleye ulaşmadan onları durdur.
-            </p>
+            <div id="overlayText" class="overlay-text">
+              <p>Canavarlar kaleye ulaşmadan doğru koridora şövalye gönder.</p>
+              <ul>
+                <li><strong>Gönder:</strong> Koridora dokun veya 1–5 tuşlarından birini kullan.</li>
+                <li><strong>Enerji:</strong> Her şövalye bir enerji harcar; enerji zamanla dolar.</li>
+                <li><strong>Dalga:</strong> Süre ilerledikçe canavarlar daha hızlı ve sık gelir.</li>
+                <li><strong>Hedef:</strong> Beş kale canını kaybetmeden en yüksek skora ulaş.</li>
+              </ul>
+            </div>
             <button id="startButton" type="button">Oyuna başla</button>
           </div>
         </div>
